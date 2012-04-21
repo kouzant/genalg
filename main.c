@@ -23,6 +23,9 @@ struct genes initialize (){
     return tmp_gene;
 }
 
+void comp_fitness(struct genes *tmp_gene){
+    printf("fitness: %d\n",tmp_gene.fitness);
+}
 void print_gene(struct genes tmp_gene){
     int i, j;
     for (i = 0; i < COL; i++){
