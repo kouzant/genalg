@@ -1,16 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#define COL 7
-#define ROW 11
-#define POPULATION 20
-
-/* Genes */
-struct genes{
-    int gene[11][7];
-    int fitness;
-};
+#include "proto.h"
 
 struct genes initialize (){
     printf("Initializing...\n");
