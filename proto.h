@@ -2,11 +2,11 @@
 #define ROW 11
 #define POPULATION 1000
 #define RESET "\033[0m"
-#define GREEN "\033[32m"      /* Green */
-#define WHITE "\033[37m"      /* White */
+#define GREEN "\033[32m" /* Green */
+#define WHITE "\033[37m" /* White */
 
 struct genes{
-    int gene[11][7];
+    int gene[ROW][COL];
     float fitness;
 };
 

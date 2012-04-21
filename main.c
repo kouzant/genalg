@@ -41,8 +41,9 @@ void comp_fitness(struct genes* tmp_gene){
 
 void print_gene(struct genes tmp_gene){
     int i, j;
-    for (i = 0; i < COL; i++){
-        for (j = 0; j < ROW; j++){
+    for (i = 0; i < ROW; i++){
+        for (j = 0; j < COL; j++){
+            /* Colors work only in UNIX */
             if (tmp_gene.gene[i][j] == 1)
                 printf(GREEN "%2d" RESET, tmp_gene.gene[i][j]);
             else
@@ -52,6 +53,21 @@ void print_gene(struct genes tmp_gene){
     }
     printf("\n");
     printf("fitness: %f\n", tmp_gene.fitness);
+}
+
+/* Just want to see the source. Serves nothing */
+void print_source(){
+    int i, j;
+    for (i = 0; i < ROW; i++){
+        for (j = 0; j < COL; j++){
+            if (source[i][j] == 1)
+                printf(GREEN "%2d" RESET, source[i][j]);
+            else
+                printf(WHITE "%2d" RESET, source[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 }
 
 int main(int argc, char *argv[]){
@@ -70,5 +86,6 @@ int main(int argc, char *argv[]){
         comp_fitness(&total_genes[i]);
         print_gene(total_genes[i]);
     }
+    print_source();
     exit(EXIT_SUCCESS);
 }
