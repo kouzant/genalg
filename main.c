@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Genes */
+struct genes{
+    int gene[11][7];
+    int fitness;
+};
+
 int main(int argc, char *argv[]){
     
-    /* Genes */
-    struct genes{
-        int gene[11][7];
-        int fitness;
-    };
 
     struct genes lala;
     int i = 0, j = 0;
