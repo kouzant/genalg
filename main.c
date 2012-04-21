@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#define COL 7
+#define ROW 11
+#define POPULATION 20
 
 /* Genes */
 struct genes{
@@ -7,29 +12,49 @@ struct genes{
     int fitness;
 };
 
-int main(int argc, char *argv[]){
+struct genes initialize (){
+    printf("Initializing...\n");
+    struct genes tmp_gene;
     
-
-    struct genes lala;
-    int i = 0, j = 0;
-    srand((unsigned)time(NULL));
+    int i, j;
 
     for (i = 0; i < 11; i++){
         for (j = 0; j < 7; j++){
-            int random = rand();
-            if (random % 2 == 0)
-                lala.gene[i][j] = 0;
+            long rand = random();
+            if (rand % 2 == 0)
+                tmp_gene.gene[i][j] = 0;
             else
-                lala.gene[i][j] = 1;
+                tmp_gene.gene[i][j] = 1;
         }
     }
-    printf("gene:\n");
-    for (i=0;i<11;i++){
-        for(j=0;j<7;j++){
-            printf("%d", lala.gene[i][j]);
+    tmp_gene.fitness = 0;
+
+    return tmp_gene;
+}
+
+void print_gene(struct genes tmp_gene){
+    int i, j;
+    for (i = 0; i < COL; i++){
+        for (j = 0; j < ROW; j++){
+            printf("%d", tmp_gene.gene[i][j]);
         }
         printf("\n");
     }
-    printf("fitness: %d\n", lala.fitness);
+    printf("\n");
+    printf("fitness: %d\n", tmp_gene.fitness);
+}
+
+int main(int argc, char *argv[]){
+    
+    struct genes total_genes[POPULATION];
+    int i;
+
+    for (i = 0; i < POPULATION; i++){
+        total_genes[i] = initialize();
+    }
+
+    for (i = 0; i < POPULATION; i++){
+        print_gene(total_genes[i]);
+    }
     exit(EXIT_SUCCESS);
 }
