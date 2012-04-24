@@ -33,4 +33,5 @@ static int source[11][7] = {
 /* Function prototypes */
 void push(struct Node**, struct genes);
 void delete(struct Node**);
+void sort(struct Node**);
 int size(struct Node**);

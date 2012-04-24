@@ -23,6 +23,24 @@ void delete(struct Node **head){
     free(index);
 }
 
+void sort(struct Node **head){
+    struct Node *tmp_node1;
+    struct Node *tmp_node2;
+    tmp_node1 = (struct Node *) malloc(sizeof(struct Node));
+    tmp_node2 = (struct Node *) malloc(sizeof(struct Node));
+    struct genes tmp_organism;
+
+    for (tmp_node1 = *head; tmp_node1 != NULL; tmp_node1 = tmp_node1->next){
+        for (tmp_node2 = tmp_node1->next; tmp_node2 != NULL; tmp_node2 = tmp_node2->next){
+            if (tmp_node1->organism.fitness >= tmp_node2->organism.fitness){
+                tmp_organism = tmp_node1->organism;
+                tmp_node1->organism = tmp_node2->organism;
+                tmp_node2->organism = tmp_organism;
+            }
+        }
+    }
+}
+
 int size(struct Node **head){
     struct Node *index;
     int counter = 0;

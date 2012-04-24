@@ -114,9 +114,14 @@ int main(int argc, char *argv[]){
         list_index = list_index->next;
     }
     
-
-
-
+    sort(&init_population);
+    
+    list_index = init_population;
+    while (list_index != NULL){
+        printf("=================\n");
+        print_gene(list_index->organism);
+        list_index = list_index->next;
+    }
 
 
     /* TEST */
