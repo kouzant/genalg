@@ -3,6 +3,29 @@
 #include <unistd.h>
 #include "proto.h"
 
+/* Check whether an adjacent cell is colored */
+int check_adj(struct genes tmp_gene, int row, int col){
+    int no_adj = 1;
+    
+    /* Check first row and all columns */
+    if (row == 0 && col >= 0){
+        if (tmp_gene.gene[row][col - 1] == 1)
+            no_adj = 0;
+    /* Check first column and all rows */
+    }else if (row >= 0 && col == 0){
+        if (tmp_gene.gene[row - 1][col])
+            no_adj = 0;
+    /* Check anything else in the grid */
+    }else if (row > 0 && col > 0){
+        if ((tmp_gene.gene[row][col - 1] == 1) ||
+            (tmp_gene.gene[row - 1][col] == 1))
+                no_adj = 0;
+    }
+
+    return no_adj;
+}
+
+/* Randomly initialize the genes */
 struct genes initialize (){
     struct genes tmp_gene;
     int i, j;
@@ -10,12 +33,12 @@ struct genes initialize (){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             long rand = random();
-            /* If even paint it white (0),
-                else paint it black (1) */
-            if (rand % 2 == 0)
-                tmp_gene.gene[i][j] = 0;
-            else
-                tmp_gene.gene[i][j] = 1;
+            tmp_gene.gene[i][j] = 0;
+            /* If even paint it black (1) */
+            if (rand % 2 == 0){
+                if ((check_adj(tmp_gene, i, j)) != 0)
+                    tmp_gene.gene[i][j] = 1;
+            }
         }
     }
     tmp_gene.fitness = 0;
@@ -23,6 +46,7 @@ struct genes initialize (){
     return tmp_gene;
 }
 
+/* Compute fitness */
 void comp_fitness(struct genes* tmp_gene){
     int i, j, penalty = 0;
 
@@ -39,6 +63,7 @@ void comp_fitness(struct genes* tmp_gene){
     tmp_gene->fitness = (float) penalty/(COL * ROW);
 }
 
+/* Print a gene struct */
 void print_gene(struct genes tmp_gene){
     int i, j;
     for (i = 0; i < ROW; i++){
@@ -81,7 +106,7 @@ int main(int argc, char *argv[]){
 
     
     for (i = 0; i < POPULATION; i++){
-        printf("====================\n");
+        printf("=================\n");
         /* Compute fitness */
         comp_fitness(&total_genes[i]);
         print_gene(total_genes[i]);
