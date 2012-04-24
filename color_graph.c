@@ -98,13 +98,15 @@ void print_source(){
 int main(int argc, char *argv[]){
     struct genes total_genes[POPULATION];
     int i;
+    /* TEST */
+    struct Node *linked_list_head = NULL;
 
     /* Initialize the first generation */
     for (i = 0; i < POPULATION; i++){
         total_genes[i] = initialize();
     }
-
     
+     
     for (i = 0; i < POPULATION; i++){
         printf("=================\n");
         /* Compute fitness */
@@ -112,5 +114,14 @@ int main(int argc, char *argv[]){
         print_gene(total_genes[i]);
     }
     print_source();
+    push(&linked_list_head, total_genes[0]);
+    push(&linked_list_head, total_genes[1]);
+    int size1 = size(&linked_list_head);
+    printf("linked list size: %d\n", size(&linked_list_head));
+    int lala;
+    for (lala = 0; lala < size1; lala++){
+        delete(&linked_list_head);
+    }
+    printf("linked list size: %d\n", size(&linked_list_head));
     exit(EXIT_SUCCESS);
 }

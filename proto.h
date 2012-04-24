@@ -10,6 +10,11 @@ struct genes{
     float fitness;
 };
 
+struct Node{
+    struct genes organism;
+    struct Node *next;
+};
+
 static int source[11][7] = {
 {1, 0, 0, 0, 0, 0, 1},
 {0, 0, 0, 0, 0, 1, 0},
@@ -23,3 +28,8 @@ static int source[11][7] = {
 {0, 0, 0, 0, 0, 1, 0},
 {1, 0, 0, 0, 0, 0, 1}
 };
+
+/* Function prototypes */
+void push(struct Node**, struct genes);
+void delete(struct Node**);
+int size(struct Node**);
