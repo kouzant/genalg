@@ -1,8 +1,28 @@
+/*
+    Copyright (C) 2012
+    Kouzoupis Antonis
+
+    This file is part of genalg.
+
+    genalg is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    genalg is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with genalg.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <stdio.h>
 #include "proto.h"
 
 /* Add nodes at the beggining of the list */
-void push(struct Node **head, struct genes organism){
+void push(struct Node **head, struct Genes organism){
     struct Node *tmp_node;
     tmp_node = (struct Node *) malloc(sizeof(struct Node));
     tmp_node->organism = organism;
@@ -31,7 +51,7 @@ void sort(struct Node **head){
     struct Node *tmp_node2;
     tmp_node1 = (struct Node *) malloc(sizeof(struct Node));
     tmp_node2 = (struct Node *) malloc(sizeof(struct Node));
-    struct genes tmp_organism;
+    struct Genes tmp_organism;
 
     for (tmp_node1 = *head; tmp_node1 != NULL; tmp_node1 = tmp_node1->next){
         for (tmp_node2 = tmp_node1->next; tmp_node2 != NULL; tmp_node2 = tmp_node2->next){

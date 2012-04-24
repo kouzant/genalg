@@ -1,10 +1,30 @@
+/*
+    Copyright (C) 2012
+    Kouzoupis Antonis
+
+    This file is part of genalg.
+
+    genalg is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    genalg is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with genalg.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "proto.h"
 
 /* Check whether an adjacent cell is colored */
-int check_adj(struct genes tmp_gene, int row, int col){
+int check_adj(struct Genes tmp_gene, int row, int col){
     int no_adj = 1;
     
     /* Check first row and all columns */
@@ -25,9 +45,9 @@ int check_adj(struct genes tmp_gene, int row, int col){
     return no_adj;
 }
 
-/* Randomly initialize the genes */
-struct genes initialize (){
-    struct genes tmp_gene;
+/* Randomly initialize the Genes */
+struct Genes initialize (){
+    struct Genes tmp_gene;
     int i, j;
 
     for (i = 0; i < ROW; i++){
@@ -47,7 +67,7 @@ struct genes initialize (){
 }
 
 /* Compute fitness */
-void comp_fitness(struct genes* tmp_gene){
+void comp_fitness(struct Genes* tmp_gene){
     int i, j, penalty = 0;
 
     for (i = 0; i < ROW; i++){
@@ -64,7 +84,7 @@ void comp_fitness(struct genes* tmp_gene){
 }
 
 /* Print a gene struct */
-void print_gene(struct genes tmp_gene){
+void print_gene(struct Genes tmp_gene){
     int i, j;
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
@@ -96,7 +116,7 @@ void print_source(){
 }
 
 int main(int argc, char *argv[]){
-    struct genes total_genes[POPULATION];
+    struct Genes total_Genes[POPULATION];
     struct Node *init_population = NULL;
     int i;
 
