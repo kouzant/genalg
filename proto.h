@@ -1,6 +1,7 @@
 #define COL 7
 #define ROW 11
 #define POPULATION 1000
+#define POP_RATE 0.5
 #define RESET "\033[0m"
 #define GREEN "\033[32m" /* Green */
 #define WHITE "\033[37m" /* White */

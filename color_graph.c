@@ -97,31 +97,45 @@ void print_source(){
 
 int main(int argc, char *argv[]){
     struct genes total_genes[POPULATION];
+    struct Node *init_population = NULL;
     int i;
-    /* TEST */
-    struct Node *linked_list_head = NULL;
 
     /* Initialize the first generation */
     for (i = 0; i < POPULATION; i++){
-        total_genes[i] = initialize();
+        push(&init_population, initialize());
     }
     
      
-    for (i = 0; i < POPULATION; i++){
+    struct Node *list_index = init_population;
+    while (list_index != NULL){
         printf("=================\n");
-        /* Compute fitness */
-        comp_fitness(&total_genes[i]);
-        print_gene(total_genes[i]);
+        comp_fitness(&(list_index->organism));
+        print_gene(list_index->organism);
+        list_index = list_index->next;
     }
-    print_source();
+    
+
+
+
+
+
+    /* TEST */
+    struct Node *linked_list_head = NULL;
+    //print_source();
     push(&linked_list_head, total_genes[0]);
     push(&linked_list_head, total_genes[1]);
     int size1 = size(&linked_list_head);
     printf("linked list size: %d\n", size(&linked_list_head));
-    int lala;
+    /*int lala;
     for (lala = 0; lala < size1; lala++){
         delete(&linked_list_head);
-    }
+    }*/
     printf("linked list size: %d\n", size(&linked_list_head));
+    printf("lala\n");
+    struct Node *tmp = linked_list_head;
+    while (tmp != NULL){
+        printf("fitness: %f", tmp->organism.fitness);
+        tmp = tmp->next;
+    }
     exit(EXIT_SUCCESS);
 }
