@@ -109,11 +109,13 @@ int main(int argc, char *argv[]){
     struct Node *list_index = init_population;
     while (list_index != NULL){
         printf("=================\n");
+        /* Compute fitness */
         comp_fitness(&(list_index->organism));
         print_gene(list_index->organism);
         list_index = list_index->next;
     }
     
+    /* Sort ascending the initial population */
     sort(&init_population);
     
     list_index = init_population;
@@ -123,24 +125,16 @@ int main(int argc, char *argv[]){
         list_index = list_index->next;
     }
 
-
-    /* TEST */
-    struct Node *linked_list_head = NULL;
-    //print_source();
-    push(&linked_list_head, total_genes[0]);
-    push(&linked_list_head, total_genes[1]);
-    int size1 = size(&linked_list_head);
-    printf("linked list size: %d\n", size(&linked_list_head));
-    /*int lala;
-    for (lala = 0; lala < size1; lala++){
-        delete(&linked_list_head);
-    }*/
-    printf("linked list size: %d\n", size(&linked_list_head));
-    printf("lala\n");
-    struct Node *tmp = linked_list_head;
-    while (tmp != NULL){
-        printf("fitness: %f", tmp->organism.fitness);
-        tmp = tmp->next;
+    /* First next generation */
+    int new_gen_pop = POPULATION * POP_RATE;
+    
+    struct Node *cur_gen = NULL;
+    list_index = init_population;
+    /* Copy 50% best primitive organisms to current generation */
+    for (i = 0; i < new_gen_pop; i++){
+        push(&cur_gen, list_index->organism);
+        list_index = list_index->next;
     }
+    printf("cur generation: %d\n", size(&cur_gen));
     exit(EXIT_SUCCESS);
 }
