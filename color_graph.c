@@ -24,6 +24,7 @@
 #include "proto.h"
 
 /* Check whether an adjacent cell is colored */
+/* Eventually I don't need it */
 int check_adj(struct Genes tmp_gene, int row, int col){
     int no_adj = 1;
     
@@ -56,8 +57,7 @@ struct Genes initialize (){
             tmp_gene.gene[i][j] = 0;
             /* If even paint it black (1) */
             if (rand % 2 == 0){
-                if ((check_adj(tmp_gene, i, j)) != 0)
-                    tmp_gene.gene[i][j] = 1;
+                tmp_gene.gene[i][j] = 1;
             }
         }
     }
