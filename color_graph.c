@@ -68,7 +68,7 @@ struct Genes initialize (){
 
 /* Compute fitness */
 void comp_fitness(struct Genes* tmp_gene){
-    int i, j, coinc = 0;
+    int i, j, hit = 0;
 
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
@@ -76,11 +76,11 @@ void comp_fitness(struct Genes* tmp_gene){
                 If there is a penalty increase by one
                 the counter */
             if (tmp_gene->gene[i][j] == source[i][j])
-                coinc++;
+                hit++;
         }
     }
     /* Fitness is between 0 and 1 */
-    tmp_gene->fitness = (float) coinc/(COL * ROW);
+    tmp_gene->fitness = (float) hit/(COL * ROW);
 }
 
 /* Print a gene struct */
@@ -113,6 +113,38 @@ void print_source(){
         printf("\n");
     }
     printf("\n");
+}
+
+/* Compute total fitness */
+float total_fitness(struct Node *head){
+    struct Node *index = head;
+    float total_fit = 0;
+
+    while(index != NULL){
+        total_fit += index->organism.fitness;
+        index = index->next;
+    }
+
+    return total_fit;
+}
+
+/* Pick an organism with Roulette Wheel sampling */
+struct Genes pick_one(struct Node *head, float total_fit){
+    int total_fitness = ((int) total_fit) + 1;
+    int threshold = random() % total_fitness;
+    float sum = 0;
+    printf("Threshold: %d\n", threshold);
+    struct Node *index = head;
+    
+    while (index != NULL){
+        sum += index->organism.fitness;
+        if (sum >= threshold)
+            break;
+        printf("Before assigning next\n");
+        index = index->next;
+    }
+
+    return index->organism;
 }
 
 int main(int argc, char *argv[]){
@@ -156,5 +188,7 @@ int main(int argc, char *argv[]){
         list_index = list_index->next;
     }
     printf("cur generation: %d\n", size(&cur_gen));
+    printf("total fitness: %f\n", total_fitness(cur_gen));
+    pick_one(cur_gen, total_fitness(cur_gen));
     exit(EXIT_SUCCESS);
 }
