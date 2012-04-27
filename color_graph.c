@@ -68,19 +68,19 @@ struct Genes initialize (){
 
 /* Compute fitness */
 void comp_fitness(struct Genes* tmp_gene){
-    int i, j, penalty = 0;
+    int i, j, coinc = 0;
 
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             /* Compare each cell to the original.
                 If there is a penalty increase by one
                 the counter */
-            if (tmp_gene->gene[i][j] != source[i][j])
-                penalty++;
+            if (tmp_gene->gene[i][j] == source[i][j])
+                coinc++;
         }
     }
     /* Fitness is between 0 and 1 */
-    tmp_gene->fitness = (float) penalty/(COL * ROW);
+    tmp_gene->fitness = (float) coinc/(COL * ROW);
 }
 
 /* Print a gene struct */
