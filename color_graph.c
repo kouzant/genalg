@@ -164,17 +164,28 @@ void mate(struct Node *next_gen,struct Node *mate_pool){
             child1.gene[i][j] = parent1.gene[i][j];
         }
     }
+    child0.fitness = 0;
+    child1.fitness = 0;
     
     for (i = 0; i < ROW; i++){
-        for (j = 0; j < HSIZE; j++){
+        for (j = 0; j < (HSIZE - 1); j++){
             child0.gene[i][COL - HSIZE + 1 + j] = parent1.gene[i][COL - HSIZE + 1 + j];
             child1.gene[i][COL - HSIZE + 1 + j] = parent0.gene[i][COL - HSIZE + 1 + j];
         }
     }
+    comp_fitness(&child0);
+    comp_fitness(&child1);
+    printf("Parent 0:\n");
     printf("========================\n");
     print_gene(parent0);
+    printf("Parent 1:\n");
+    printf("========================\n");
     print_gene(parent1);
+    printf("Child 0:\n");
+    printf("========================\n");
     print_gene(child0);
+    printf("Child 1:\n");
+    printf("========================\n");
     print_gene(child1);
 }
 
