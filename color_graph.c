@@ -129,27 +129,60 @@ float total_fitness(struct Node *head){
 }
 
 /* Pick an organism with Roulette Wheel sampling */
-struct Genes pick_one(struct Node *head, float total_fit){
+struct Genes pick_one_parent(struct Node *head, float total_fit){
     int total_fitness = ((int) total_fit) + 1;
+    /* Threshold between 0 and total_fitness */
     int threshold = random() % total_fitness;
     float sum = 0;
-    printf("Threshold: %d\n", threshold);
     struct Node *index = head;
     
     while (index != NULL){
         sum += index->organism.fitness;
         if (sum >= threshold)
             break;
-        printf("Before assigning next\n");
         index = index->next;
     }
 
     return index->organism;
 }
 
+/* Mate two organisms */
+void mate(struct Node *next_gen,struct Node *mate_pool){
+    /* Pick two parents */
+    struct Genes parent0 = pick_one_parent(mate_pool,
+        total_fitness(mate_pool));
+    struct Genes parent1 = pick_one_parent(mate_pool,
+        total_fitness(mate_pool));
+    /* Two children */
+    struct Genes child0;
+    struct Genes child1;
+    int i, j;
+
+    for (i = 0; i < ROW; i++){
+        for (j = 0; j < COL; j++){
+            child0.gene[i][j] = parent0.gene[i][j];
+            child1.gene[i][j] = parent1.gene[i][j];
+        }
+    }
+    
+    for (i = 0; i < ROW; i++){
+        for (j = 0; j < HSIZE; j++){
+            child0.gene[i][COL - HSIZE + 1 + j] = parent1.gene[i][COL - HSIZE + 1 + j];
+            child1.gene[i][COL - HSIZE + 1 + j] = parent0.gene[i][COL - HSIZE + 1 + j];
+        }
+    }
+    printf("========================\n");
+    print_gene(parent0);
+    print_gene(parent1);
+    print_gene(child0);
+    print_gene(child1);
+}
+
 int main(int argc, char *argv[]){
     struct Genes total_Genes[POPULATION];
     struct Node *init_population = NULL;
+    struct Node *mate_pool = NULL;
+    struct Node *next_gen = NULL;
     int i;
 
     /* Initialize the first generation */
@@ -160,10 +193,10 @@ int main(int argc, char *argv[]){
      
     struct Node *list_index = init_population;
     while (list_index != NULL){
-        printf("=================\n");
+        //printf("=================\n");
         /* Compute fitness */
         comp_fitness(&(list_index->organism));
-        print_gene(list_index->organism);
+        //print_gene(list_index->organism);
         list_index = list_index->next;
     }
     
@@ -172,23 +205,28 @@ int main(int argc, char *argv[]){
     
     list_index = init_population;
     while (list_index != NULL){
-        printf("=================\n");
-        print_gene(list_index->organism);
+        //printf("=================\n");
+        //print_gene(list_index->organism);
         list_index = list_index->next;
     }
 
     /* First next generation */
     int new_gen_pop = POPULATION * POP_RATE;
     
-    struct Node *cur_gen = NULL;
     list_index = init_population;
-    /* Copy 50% best primitive organisms to current generation */
+    /* Copy 50% best primitive organisms to mating pool */
     for (i = 0; i < new_gen_pop; i++){
-        push(&cur_gen, list_index->organism);
+        push(&mate_pool, list_index->organism);
         list_index = list_index->next;
     }
-    printf("cur generation: %d\n", size(&cur_gen));
-    printf("total fitness: %f\n", total_fitness(cur_gen));
-    pick_one(cur_gen, total_fitness(cur_gen));
+    printf("current generation size: %d\n", size(init_population));
+    printf("mating pool size: %d\n", size(mate_pool));
+    printf("total fitness: %f\n", total_fitness(mate_pool));
+    
+    mate(next_gen, mate_pool);
+    /* Mate organisms
+    for (i = 0; i < size(mate_pool); i++){
+        mate(next_gen, mate_pool);
+    }*/
     exit(EXIT_SUCCESS);
 }

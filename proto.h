@@ -25,6 +25,7 @@
 #define RESET "\033[0m"
 #define GREEN "\033[32m" /* Green */
 #define WHITE "\033[37m" /* White */
+#define HSIZE 4 /* Heredity factor, between 0 and COL */
 
 struct Genes{
     int gene[ROW][COL];
@@ -54,4 +55,4 @@ static int source[11][7] = {
 void push(struct Node**, struct Genes);
 void delete(struct Node**);
 void sort(struct Node**);
-int size(struct Node**);
+int size(struct Node*);

@@ -65,10 +65,10 @@ void sort(struct Node **head){
 }
 
 /* Calculates the size of the list */
-int size(struct Node **head){
+int size(struct Node *head){
     struct Node *index;
     int counter = 0;
-    index = *head;
+    index = head;
     
     while (index != NULL){
         index = index->next;
