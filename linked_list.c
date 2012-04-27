@@ -41,10 +41,21 @@ void push(struct Node **head, struct Genes organism){
 void delete(struct Node **head){
     struct Node *index;
     index = *head;
-    *head = index->next;
-    free(index);
+    while(index != NULL){
+        struct Node *next = index->next;
+        free(index);
+        index = next;
+    }
 }
 
+void free_list(struct Node **head){
+    struct Node *index;
+    while(*head != NULL){
+        index = (*head)->next;
+        free(*head);
+        *head = index;
+    }
+}
 /* Sort the list in ascending order */
 void sort(struct Node **head){
     struct Node *tmp_node1;
@@ -55,7 +66,7 @@ void sort(struct Node **head){
 
     for (tmp_node1 = *head; tmp_node1 != NULL; tmp_node1 = tmp_node1->next){
         for (tmp_node2 = tmp_node1->next; tmp_node2 != NULL; tmp_node2 = tmp_node2->next){
-            if (tmp_node1->organism.fitness >= tmp_node2->organism.fitness){
+            if (tmp_node1->organism.fitness <= tmp_node2->organism.fitness){
                 tmp_organism = tmp_node1->organism;
                 tmp_node1->organism = tmp_node2->organism;
                 tmp_node2->organism = tmp_organism;

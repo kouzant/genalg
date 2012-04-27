@@ -1,22 +1,22 @@
 /*
-    Copyright (C) 2012
-    Kouzoupis Antonis
+   Copyright (C) 2012
+   Kouzoupis Antonis
 
-    This file is part of genalg.
+   This file is part of genalg.
 
-    genalg is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+   genalg is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
-    genalg is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+   genalg is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with genalg.  If not, see <http://www.gnu.org/licenses/>.
-*/
+   You should have received a copy of the GNU General Public License
+   along with genalg.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,20 +27,20 @@
 /* Eventually I don't need it */
 int check_adj(struct Genes tmp_gene, int row, int col){
     int no_adj = 1;
-    
+
     /* Check first row and all columns */
     if (row == 0 && col >= 0){
         if (tmp_gene.gene[row][col - 1] == 1)
             no_adj = 0;
-    /* Check first column and all rows */
+        /* Check first column and all rows */
     }else if (row >= 0 && col == 0){
         if (tmp_gene.gene[row - 1][col])
             no_adj = 0;
-    /* Check anything else in the grid */
+        /* Check anything else in the grid */
     }else if (row > 0 && col > 0){
         if ((tmp_gene.gene[row][col - 1] == 1) ||
-            (tmp_gene.gene[row - 1][col] == 1))
-                no_adj = 0;
+                (tmp_gene.gene[row - 1][col] == 1))
+            no_adj = 0;
     }
 
     return no_adj;
@@ -73,8 +73,8 @@ void comp_fitness(struct Genes* tmp_gene){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             /* Compare each cell to the original.
-                If there is a penalty increase by one
-                the counter */
+               If there is a penalty increase by one
+               the counter */
             if (tmp_gene->gene[i][j] == source[i][j])
                 hit++;
         }
@@ -135,7 +135,7 @@ struct Genes pick_one_parent(struct Node *head, float total_fit){
     int threshold = random() % total_fitness;
     float sum = 0;
     struct Node *index = head;
-    
+
     while (index != NULL){
         sum += index->organism.fitness;
         if (sum >= threshold)
@@ -147,12 +147,12 @@ struct Genes pick_one_parent(struct Node *head, float total_fit){
 }
 
 /* Mate two organisms */
-void mate(struct Node *next_gen,struct Node *mate_pool){
+void mate(struct Node **next_gen, struct Node *mate_pool){
     /* Pick two parents */
     struct Genes parent0 = pick_one_parent(mate_pool,
-        total_fitness(mate_pool));
+            total_fitness(mate_pool));
     struct Genes parent1 = pick_one_parent(mate_pool,
-        total_fitness(mate_pool));
+            total_fitness(mate_pool));
     /* Two children */
     struct Genes child0;
     struct Genes child1;
@@ -164,9 +164,8 @@ void mate(struct Node *next_gen,struct Node *mate_pool){
             child1.gene[i][j] = parent1.gene[i][j];
         }
     }
-    child0.fitness = 0;
-    child1.fitness = 0;
-    
+
+    /* Mating process with mask 1111000 (see HSIZE) */
     for (i = 0; i < ROW; i++){
         for (j = 0; j < (HSIZE - 1); j++){
             child0.gene[i][COL - HSIZE + 1 + j] = parent1.gene[i][COL - HSIZE + 1 + j];
@@ -175,34 +174,24 @@ void mate(struct Node *next_gen,struct Node *mate_pool){
     }
     comp_fitness(&child0);
     comp_fitness(&child1);
-    printf("Parent 0:\n");
-    printf("========================\n");
-    print_gene(parent0);
-    printf("Parent 1:\n");
-    printf("========================\n");
-    print_gene(parent1);
-    printf("Child 0:\n");
-    printf("========================\n");
-    print_gene(child0);
-    printf("Child 1:\n");
-    printf("========================\n");
-    print_gene(child1);
+    push(next_gen, child0);
+    push(next_gen, child1);
 }
 
 int main(int argc, char *argv[]){
     struct Genes total_Genes[POPULATION];
-    struct Node *init_population = NULL;
+    struct Node *cur_gen = NULL;
     struct Node *mate_pool = NULL;
     struct Node *next_gen = NULL;
     int i;
 
     /* Initialize the first generation */
     for (i = 0; i < POPULATION; i++){
-        push(&init_population, initialize());
+        push(&cur_gen, initialize());
     }
-    
-     
-    struct Node *list_index = init_population;
+
+
+    struct Node *list_index = cur_gen;
     while (list_index != NULL){
         //printf("=================\n");
         /* Compute fitness */
@@ -210,34 +199,60 @@ int main(int argc, char *argv[]){
         //print_gene(list_index->organism);
         list_index = list_index->next;
     }
-    
-    /* Sort ascending the initial population */
-    sort(&init_population);
-    
-    list_index = init_population;
-    while (list_index != NULL){
-        //printf("=================\n");
-        //print_gene(list_index->organism);
-        list_index = list_index->next;
-    }
 
-    /* First next generation */
-    int new_gen_pop = POPULATION * POP_RATE;
-    
-    list_index = init_population;
-    /* Copy 50% best primitive organisms to mating pool */
-    for (i = 0; i < new_gen_pop; i++){
-        push(&mate_pool, list_index->organism);
-        list_index = list_index->next;
-    }
-    printf("current generation size: %d\n", size(init_population));
-    printf("mating pool size: %d\n", size(mate_pool));
-    printf("total fitness: %f\n", total_fitness(mate_pool));
-    
-    mate(next_gen, mate_pool);
-    /* Mate organisms
-    for (i = 0; i < size(mate_pool); i++){
-        mate(next_gen, mate_pool);
-    }*/
+        /* Sort ascending the initial population */
+        sort(&cur_gen);
+        float biggest_fit = 0;
+    do{
+
+        list_index = cur_gen;
+        float koko = 0;
+        while (list_index != NULL){
+            //printf("=================\n");
+            //print_gene(list_index->organism);
+            koko += list_index->organism.fitness;
+            list_index = list_index->next;
+        }
+
+        printf("Old total fitness: %f\n", koko);
+        /* First next generation */
+        int new_gen_pop = POPULATION * POP_RATE;
+
+        list_index = cur_gen;
+        /* Copy 50% best primitive organisms to mating pool */
+        for (i = 0; i < new_gen_pop; i++){
+            push(&mate_pool, list_index->organism);
+            list_index = list_index->next;
+        }
+        printf("current generation size: %d\n", size(cur_gen));
+        printf("mating pool size: %d\n", size(mate_pool));
+        printf("total fitness: %f\n", total_fitness(mate_pool));
+
+        /* Mate organisms */
+        for (i = 0; i < size(mate_pool); i++){
+            mate(&next_gen, mate_pool);
+        }
+
+        printf("mate pool size: %d\n", size(mate_pool));
+        printf("next gen size: %d\n", size(next_gen));
+        sort(&next_gen);
+
+        /* Find last (aka biggest) fitness in next generation */
+        list_index = next_gen;
+        while (list_index != NULL){
+            biggest_fit = list_index->organism.fitness;
+            if (biggest_fit == 1)
+                break;
+            list_index = list_index->next;
+        }
+        printf("Biggest fitness: %f\n", biggest_fit);
+        
+        cur_gen = next_gen;
+        delete(&next_gen);
+        delete(&mate_pool);
+        next_gen = NULL;
+        mate_pool = NULL;
+        printf("Time %d\n", time(NULL));
+    }while(biggest_fit != 1);
     exit(EXIT_SUCCESS);
 }
