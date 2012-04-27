@@ -146,6 +146,15 @@ struct Genes pick_one_parent(struct Node *head, float total_fit){
     return index->organism;
 }
 
+/* Mutate a random gene*/
+void mutate(struct Genes *child0, struct Genes *child1, int i){
+    /*Pick a random gene between 0 and COL */
+    int gene = random() % COL;
+    int tmp = child0->gene[i][gene];
+    child0->gene[i][gene] = child1->gene[i][gene];
+    child1->gene[i][gene] = child0->gene[i][gene];
+}
+
 /* Mate two organisms */
 void mate(struct Node **next_gen, struct Node *mate_pool){
     /* Pick two parents */
@@ -171,6 +180,9 @@ void mate(struct Node **next_gen, struct Node *mate_pool){
             child0.gene[i][COL - HSIZE + 1 + j] = parent1.gene[i][COL - HSIZE + 1 + j];
             child1.gene[i][COL - HSIZE + 1 + j] = parent0.gene[i][COL - HSIZE + 1 + j];
         }
+        long rand = random();
+        if((rand % 2) == 0)
+            mutate(&child0, &child1, i);
     }
     comp_fitness(&child0);
     comp_fitness(&child1);
@@ -237,14 +249,9 @@ int main(int argc, char *argv[]){
         printf("next gen size: %d\n", size(next_gen));
         sort(&next_gen);
 
-        /* Find last (aka biggest) fitness in next generation */
-        list_index = next_gen;
-        while (list_index != NULL){
-            biggest_fit = list_index->organism.fitness;
-            if (biggest_fit == 1)
-                break;
-            list_index = list_index->next;
-        }
+        biggest_fit = next_gen->organism.fitness;
+        if (biggest_fit == 1)
+            print_gene(next_gen->organism);
         printf("Biggest fitness: %f\n", biggest_fit);
         
         cur_gen = next_gen;
@@ -253,6 +260,7 @@ int main(int argc, char *argv[]){
         next_gen = NULL;
         mate_pool = NULL;
         printf("Time %d\n", time(NULL));
+        //biggest_fit = 1;
     }while(biggest_fit != 1);
     exit(EXIT_SUCCESS);
 }
