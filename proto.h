@@ -23,7 +23,7 @@
 #define POPULATION 5000
 #define POP_RATE 0.5 /* Population renewal rate */
 #define HSIZE 4 /* Heredity factor, between 0 and COL */
-#define MUT_RATE 0.3 /* Mutation rate */
+#define MUT_RATE 0.2 /* Mutation rate */
 #define RESET "\033[0m"
 #define GREEN "\033[32m" /* Green */
 #define WHITE "\033[37m" /* White */
