@@ -54,6 +54,7 @@ struct Genes initialize (){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             long rand = random();
+            printf("random: %d\n", rand);
             tmp_gene.gene[i][j] = 0;
             /* If even paint it black (1) */
             if (rand % 2 == 0){
@@ -202,6 +203,8 @@ int main(int argc, char *argv[]){
     struct Node *mate_pool = NULL;
     struct Node *next_gen = NULL;
     int i;
+    /* Seed of random */
+    srandom(time(NULL));
 
     /* Initialize the first generation */
     for (i = 0; i < POPULATION; i++){
