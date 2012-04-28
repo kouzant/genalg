@@ -54,7 +54,6 @@ struct Genes initialize (){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             long rand = random();
-            printf("random: %d\n", rand);
             tmp_gene.gene[i][j] = 0;
             /* If even paint it black (1) */
             if (rand % 2 == 0){
@@ -245,6 +244,8 @@ int main(int argc, char *argv[]){
             push(&mate_pool, list_index->organism);
             list_index = list_index->next;
         }
+        printf("M A T E  P O O L\n");
+        print_list(mate_pool);
         printf("current generation size: %d\n", size(cur_gen));
         printf("mating pool size: %d\n", size(mate_pool));
         printf("total fitness: %f\n", total_fitness(mate_pool));

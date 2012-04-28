@@ -37,7 +37,7 @@ void push(struct Node **head, struct Genes organism){
     }
 }
 
-/* Delete first node of the list */
+/* Delete all nodes from the list */
 void delete(struct Node **head){
     struct Node *index;
     index = *head;
@@ -48,14 +48,17 @@ void delete(struct Node **head){
     }
 }
 
-void free_list(struct Node **head){
+/* Print a list with organisms */
+void print_list(struct Node *head){
     struct Node *index;
-    while(*head != NULL){
-        index = (*head)->next;
-        free(*head);
-        *head = index;
+    index = head;
+    while (index != NULL){
+        printf("====================\n");
+        print_gene(index->organism);
+        index = index->next;
     }
 }
+
 /* Sort the list in ascending order */
 void sort(struct Node **head){
     struct Node *tmp_node1;

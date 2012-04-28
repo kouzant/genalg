@@ -57,3 +57,5 @@ void push(struct Node**, struct Genes);
 void delete(struct Node**);
 void sort(struct Node**);
 int size(struct Node*);
+void print_list(struct Node*);
+void print_gene(struct Genes);
