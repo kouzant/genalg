@@ -223,6 +223,7 @@ int main(int argc, char *argv[]){
         /* Sort ascending the initial population */
         sort(&cur_gen);
         float biggest_fit = 0;
+        int flag = 0;
     do{
 
         list_index = cur_gen;
@@ -237,7 +238,7 @@ int main(int argc, char *argv[]){
         printf("Old total fitness: %f\n", koko);
         /* First next generation */
         int new_gen_pop = POPULATION * POP_RATE;
-
+        sort(&cur_gen);
         list_index = cur_gen;
         /* Copy 50% best primitive organisms to mating pool */
         for (i = 0; i < new_gen_pop; i++){
@@ -245,7 +246,6 @@ int main(int argc, char *argv[]){
             list_index = list_index->next;
         }
         printf("M A T E  P O O L\n");
-        print_list(mate_pool);
         printf("current generation size: %d\n", size(cur_gen));
         printf("mating pool size: %d\n", size(mate_pool));
         printf("total fitness: %f\n", total_fitness(mate_pool));
@@ -265,19 +265,23 @@ int main(int argc, char *argv[]){
         printf("mate pool size: %d\n", size(mate_pool));
         printf("next gen size: %d\n", size(next_gen));
         sort(&next_gen);
-
+        //print_list(next_gen);
         biggest_fit = next_gen->organism.fitness;
         if (biggest_fit > 0.9)
             print_gene(next_gen->organism);
         printf("Biggest fitness: %f\n", biggest_fit);
         
-        cur_gen = next_gen;
+        delete(&cur_gen);
+        cur_gen = NULL;
+        copy_list(&next_gen, &cur_gen);
+        //cur_gen = next_gen;
         delete(&next_gen);
         delete(&mate_pool);
         next_gen = NULL;
         mate_pool = NULL;
         printf("Time %d\n", time(NULL));
         //biggest_fit = 1;
-    }while(biggest_fit != 1);
+        flag++;
+    }while(biggest_fit < 1);
     exit(EXIT_SUCCESS);
 }

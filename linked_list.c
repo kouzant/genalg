@@ -37,6 +37,16 @@ void push(struct Node **head, struct Genes organism){
     }
 }
 
+void copy_list(struct Node **source, struct Node **target){
+    struct Node *tmp_node;
+    tmp_node = *source;
+    while(tmp_node != NULL){
+        struct Genes tmp_gene = tmp_node->organism;
+        push(target, tmp_gene);
+        tmp_node = tmp_node->next;      
+    }
+}
+
 /* Delete all nodes from the list */
 void delete(struct Node **head){
     struct Node *index;
