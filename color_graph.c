@@ -25,7 +25,7 @@
 
 /* Check whether an adjacent cell is colored */
 /* Eventually I don't need it */
-int check_adj(struct Genes tmp_gene, int row, int col){
+int check_adj(struct Organisms tmp_gene, int row, int col){
     int no_adj = 1;
 
     /* Check first row and all columns */
@@ -46,9 +46,9 @@ int check_adj(struct Genes tmp_gene, int row, int col){
     return no_adj;
 }
 
-/* Randomly initialize the Genes */
-struct Genes initialize (){
-    struct Genes tmp_gene;
+/* Randomly initialize the Organisms */
+struct Organisms initialize (){
+    struct Organisms tmp_gene;
     int i, j;
 
     for (i = 0; i < ROW; i++){
@@ -67,7 +67,7 @@ struct Genes initialize (){
 }
 
 /* Compute fitness */
-void comp_fitness(struct Genes* tmp_gene){
+void comp_fitness(struct Organisms* tmp_gene){
     int i, j, hit = 0;
 
     for (i = 0; i < ROW; i++){
@@ -85,7 +85,7 @@ void comp_fitness(struct Genes* tmp_gene){
 }
 
 /* Print a gene struct */
-void print_gene(struct Genes tmp_gene){
+void print_gene(struct Organisms tmp_gene){
     int i, j;
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
@@ -130,7 +130,7 @@ float total_fitness(struct Node *head){
 }
 
 /* Pick an organism with Roulette Wheel sampling */
-struct Genes pick_one_parent(struct Node *head, float total_fit){
+struct Organisms pick_one_parent(struct Node *head, float total_fit){
     int total_fitness = ((int) total_fit) + 1;
     /* Threshold between 0 and total_fitness */
     int threshold = random() % total_fitness;
@@ -169,13 +169,13 @@ void mutate(struct Node **next_gen){
 /* Mate two organisms */
 void mate(struct Node **next_gen, struct Node *mate_pool){
     /* Pick two parents */
-    struct Genes parent0 = pick_one_parent(mate_pool,
+    struct Organisms parent0 = pick_one_parent(mate_pool,
             total_fitness(mate_pool));
-    struct Genes parent1 = pick_one_parent(mate_pool,
+    struct Organisms parent1 = pick_one_parent(mate_pool,
             total_fitness(mate_pool));
     /* Two children */
-    struct Genes child0;
-    struct Genes child1;
+    struct Organisms child0;
+    struct Organisms child1;
     int i, j;
 
     /* Copy parents unchanged to children */
@@ -202,7 +202,7 @@ void mate(struct Node **next_gen, struct Node *mate_pool){
 }
 
 int main(int argc, char *argv[]){
-    struct Genes total_Genes[POPULATION];
+    struct Organisms total_Organisms[POPULATION];
     struct Node *cur_gen = NULL;
     struct Node *mate_pool = NULL;
     struct Node *next_gen = NULL;

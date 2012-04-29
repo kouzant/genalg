@@ -22,7 +22,7 @@
 #include "proto.h"
 
 /* Add nodes at the beggining of the list */
-void push(struct Node **head, struct Genes organism){
+void push(struct Node **head, struct Organisms organism){
     struct Node *tmp_node;
     tmp_node = (struct Node *) malloc(sizeof(struct Node));
     tmp_node->organism = organism;
@@ -37,11 +37,12 @@ void push(struct Node **head, struct Genes organism){
     }
 }
 
+/* Copy one list to another */
 void copy_list(struct Node **source, struct Node **target){
     struct Node *tmp_node;
     tmp_node = *source;
     while(tmp_node != NULL){
-        struct Genes tmp_gene = tmp_node->organism;
+        struct Organisms tmp_gene = tmp_node->organism;
         push(target, tmp_gene);
         tmp_node = tmp_node->next;      
     }
@@ -58,7 +59,7 @@ void delete(struct Node **head){
     }
 }
 
-/* Print a list with organisms */
+/* Print a list with organisms. For debugging purposes */
 void print_list(struct Node *head){
     struct Node *index;
     index = head;
@@ -69,13 +70,13 @@ void print_list(struct Node *head){
     }
 }
 
-/* Sort the list in ascending order */
+/* Sort the list in descending order */
 void sort(struct Node **head){
     struct Node *tmp_node1;
     struct Node *tmp_node2;
     tmp_node1 = (struct Node *) malloc(sizeof(struct Node));
     tmp_node2 = (struct Node *) malloc(sizeof(struct Node));
-    struct Genes tmp_organism;
+    struct Organisms tmp_organism;
 
     for (tmp_node1 = *head; tmp_node1 != NULL; tmp_node1 = tmp_node1->next){
         for (tmp_node2 = tmp_node1->next; tmp_node2 != NULL; tmp_node2 = tmp_node2->next){

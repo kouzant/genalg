@@ -18,9 +18,9 @@
     along with genalg.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define COL 7
-#define ROW 11
-#define POPULATION 5000
+#define COL 7 /* Columns of source array */
+#define ROW 11 /* Rows of source array */
+#define POPULATION 5000 /* Population size */
 #define POP_RATE 0.5 /* Population renewal rate */
 #define HSIZE 4 /* Heredity factor, between 0 and COL */
 #define MUT_RATE 0.2 /* Mutation rate */
@@ -28,17 +28,18 @@
 #define GREEN "\033[32m" /* Green */
 #define WHITE "\033[37m" /* White */
 
-struct Genes{
+struct Organisms{
     int gene[ROW][COL];
     float fitness;
 };
 
 struct Node{
-    struct Genes organism;
+    struct Organisms organism;
     struct Node *next;
 };
 
-static int source[11][7] = {
+/* Source graph */
+static int source[ROW][COL] = {
 {1, 0, 0, 0, 0, 0, 0},
 {0, 0, 0, 0, 0, 1, 0},
 {1, 0, 0, 0, 0, 0, 0},
@@ -53,9 +54,10 @@ static int source[11][7] = {
 };
 
 /* Function prototypes */
-void push(struct Node**, struct Genes);
+void push(struct Node**, struct Organisms);
 void delete(struct Node**);
 void sort(struct Node**);
 int size(struct Node*);
 void print_list(struct Node*);
-void print_gene(struct Genes);
+void copy_list(struct Node**, struct Node**);
+void print_gene(struct Organisms);
