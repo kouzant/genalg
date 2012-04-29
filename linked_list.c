@@ -19,6 +19,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "proto.h"
 
 /* Add nodes at the beggining of the list */
