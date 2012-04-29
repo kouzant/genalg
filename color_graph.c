@@ -202,6 +202,9 @@ void mate(struct Node **next_gen, struct Node *mate_pool){
 }
 
 int main(int argc, char *argv[]){
+    long start_t = time(NULL);
+    long end_t = 0;
+    int generations = 0;
     struct Organisms total_Organisms[POPULATION];
     struct Node *cur_gen = NULL;
     struct Node *mate_pool = NULL;
@@ -224,6 +227,7 @@ int main(int argc, char *argv[]){
 
     /* Sort descending the initial population */
     sort(&cur_gen);
+    generations++;
     float biggest_fit = 0;
     do{
 
@@ -258,7 +262,7 @@ int main(int argc, char *argv[]){
         /* Print the organism with fitness = 1 (aka final) */
         if (biggest_fit == 1)
             print_gene(next_gen->organism);
-        printf("Biggest fitness: %f\n", biggest_fit);
+        printf("Biggest fitness in generation %d:  %f\n", generations, biggest_fit);
 
         /* Delete current generation */
         delete(&cur_gen);
@@ -270,8 +274,10 @@ int main(int argc, char *argv[]){
         delete(&mate_pool);
         next_gen = NULL;
         mate_pool = NULL;
-        printf("Time %d\n", time(NULL));
+        generations++;
     }while(biggest_fit < 1);
-
+    end_t = time(NULL);
+    printf("Computed after %d generations and after %d seconds.\n", generations - 1,
+        (end_t - start_t));
     exit(EXIT_SUCCESS);
 }
