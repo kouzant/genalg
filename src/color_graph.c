@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 #include "proto.h"
 
 /* Check whether an adjacent cell is colored */
@@ -205,7 +206,6 @@ int main(int argc, char *argv[]){
     long start_t = time(NULL);
     long end_t = 0;
     int generations = 0;
-    struct Organisms total_Organisms[POPULATION];
     struct Node *cur_gen = NULL;
     struct Node *mate_pool = NULL;
     struct Node *next_gen = NULL;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]){
         /* Sort descenting the current population */
         sort(&cur_gen);
         list_index = cur_gen;
-        /* Copy 50% best primitive organisms to mating pool */
+        /* Copy POP_RATE best primitive organisms to mating pool */
         for (i = 0; i < new_gen_pop; i++){
             push(&mate_pool, list_index->organism);
             list_index = list_index->next;
@@ -278,6 +278,6 @@ int main(int argc, char *argv[]){
     }while(biggest_fit < 1);
     end_t = time(NULL);
     printf("Computed after %d generations and after %d seconds.\n", generations - 1,
-        (end_t - start_t));
+        (int)(end_t - start_t));
     exit(EXIT_SUCCESS);
 }
