@@ -1,1 +1,4 @@
 Graph coloring with genetic algorithm.
+
+To compile run make.
+To clean the working directory run make clean.
