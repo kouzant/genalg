@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+
 #include "proto.h"
 
 /* Check whether an adjacent cell is colored */
@@ -91,10 +92,14 @@ void print_gene(struct Organisms tmp_gene){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             /* Colors work only in UNIX */
+#if defined(__unix__)
             if (tmp_gene.gene[i][j] == 1)
                 printf(GREEN "%2d" RESET, tmp_gene.gene[i][j]);
             else
                 printf(WHITE "%2d" RESET, tmp_gene.gene[i][j]);
+#elif defined(_WIN32)
+                printf("%2d", tmp_gene.gene[i][j]);
+#endif
         }
         printf("\n");
     }
