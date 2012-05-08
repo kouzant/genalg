@@ -89,6 +89,7 @@ void comp_fitness(struct Organisms* tmp_gene){
 /* Print a gene struct */
 void print_gene(struct Organisms tmp_gene){
     int i, j;
+    printf("\n");
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             /* Colors work only in UNIX */
