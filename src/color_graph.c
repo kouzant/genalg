@@ -69,14 +69,10 @@ void print_gene(struct Organisms tmp_gene){
     for (i = 0; i < ROW; i++){
         for (j = 0; j < COL; j++){
             /* Colors work only in UNIX */
-#if defined(__unix__)
             if (tmp_gene.gene[i][j] == 1)
                 printf(GREEN "%2d" RESET, tmp_gene.gene[i][j]);
             else
                 printf(WHITE "%2d" RESET, tmp_gene.gene[i][j]);
-#elif defined(_WIN32)
-                printf("%2d", tmp_gene.gene[i][j]);
-#endif
         }
         printf("\n");
     }
@@ -246,8 +242,5 @@ int main(int argc, char *argv[]){
     end_t = time(NULL);
     printf("Computed after %d generations and after %d seconds.\n", generations - 1,
         (int)(end_t - start_t));
-#if defined(_WIN32)
-    getch();
-#endif
     exit(EXIT_SUCCESS);
 }
