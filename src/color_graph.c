@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <time.h>
 
 #include "proto.h"
@@ -247,5 +246,8 @@ int main(int argc, char *argv[]){
     end_t = time(NULL);
     printf("Computed after %d generations and after %d seconds.\n", generations - 1,
         (int)(end_t - start_t));
+#if defined(_WIN32)
+    getch();
+#endif
     exit(EXIT_SUCCESS);
 }
